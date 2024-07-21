@@ -13,21 +13,67 @@ namespace hooks
             for (RE::BGSKeyword* Yen : Hen){
                 std::string_view Lsht = (clib_util::editorID::get_editorID(Yen)).data();
                 switch (hash(Lsht.data(), Lsht.size())){
-                case "ks_DragonFlameWaveShoutALDUIN"_h:
+                case "DSV_UnrelentingForce"_h:
                     if (SpellFire) {
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x8A0, "DraugrShoutVoicing.esp")));
-                    }
-                    else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0xA8C, "DraugrShoutVoicing.esp")));
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x802, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x800, "DraugrShoutVoicing.esp")));
                     }
                     break;
 
-                case "005SummonShouts"_h:
+                case "DSV_Dismay"_h:
                     if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x81D, "DraugrShoutVoicing.esp")));
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x805, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x804, "DraugrShoutVoicing.esp")));
                     }
-                    else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x81C, "DraugrShoutVoicing.esp")));
+                    break;
+
+                case "DSV_IceForm"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x807, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x806, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_Disarm"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x809, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x808, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_FrostBreath"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80B, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80A, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_PhantomForm"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80D, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80C, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_ElementalFury"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80F, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80E, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_BecomeEthereal"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x811, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x810, "DraugrShoutVoicing.esp")));
                     }
                     break;
 
