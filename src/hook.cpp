@@ -14,7 +14,7 @@ namespace hooks
                 std::string_view Lsht = (clib_util::editorID::get_editorID(Yen)).data();
                 switch (hash(Lsht.data(), Lsht.size())){
                 case "DSV_UnrelentingForce"_h:
-                    if (SpellFire) {
+                    if (SpellFire){
                         util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x802, "DraugrShoutVoicing.esp")));
                     }else{
                         util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x800, "DraugrShoutVoicing.esp")));
