@@ -15,19 +15,19 @@ namespace hooks
                 switch (hash(Lsht.data(), Lsht.size())){
                 case "ks_DragonFlameWaveShoutALDUIN"_h:
                     if (SpellFire) {
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x8A0, "Dragons shout with voice - KS2 Patch.esp")));
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x8A0, "DraugrShoutVoicing.esp")));
                     }
                     else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0xA8C, "Dragons shout with voice - KS2 Patch.esp")));
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0xA8C, "DraugrShoutVoicing.esp")));
                     }
                     break;
 
                 case "005SummonShouts"_h:
                     if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x81D, "Dragons shout with voice - KS2 Patch.esp")));
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x81D, "DraugrShoutVoicing.esp")));
                     }
                     else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x81C, "Dragons shout with voice - KS2 Patch.esp")));
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x81C, "DraugrShoutVoicing.esp")));
                     }
                     break;
 
