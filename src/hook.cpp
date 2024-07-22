@@ -93,24 +93,23 @@ namespace hooks
 		}
 		std::string_view eventTag = a_event->tag.data();
 		RE::Actor* actor = const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>();
-        switch (hash(eventTag.data(), eventTag.size())) {
-        case "BeginCastVoice"_h:
+        auto data = RE::TESDataHandler::GetSingleton();
+        if(actor->GetActorBase()->GetVoiceType() == data->LookupForm<RE::BGSVoiceType>(0x1F1CD, "Skyrim.esm")){
+            switch (hash(eventTag.data(), eventTag.size())){
+            case "BeginCastVoice"_h:
 
-            //logger::info("anim_event BeginCastVoice");
+                GetEquippedShout(actor);
 
-            GetEquippedShout(actor);
+                break;
 
-            break;
+            case "Voice_SpellFire_Event"_h:
 
-        case "Voice_SpellFire_Event"_h:
+                GetEquippedShout(actor, true);
 
-            //logger::info("anim_event Voice_SpellFire_Event");
-
-            GetEquippedShout(actor, true);
-
-            break;
-		
-		}
+                break;
+            }
+        }
+        
 	}
 
 	EventResult on_animation_event::ProcessEvent_NPC(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
