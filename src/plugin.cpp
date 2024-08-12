@@ -10,15 +10,14 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 {
 	switch (a_msg->type) {
 	case SKSE::MessagingInterface::kDataLoaded:
-		hooks::on_animation_event::install();
-
 		break;
 	case SKSE::MessagingInterface::kPostLoad:
 		break;
 	case SKSE::MessagingInterface::kPreLoadGame:
 		break;
 	case SKSE::MessagingInterface::kPostLoadGame:
-        break;
+		hooks::util::install();
+		break;
 	case SKSE::MessagingInterface::kNewGame:
 		break;
 	}
