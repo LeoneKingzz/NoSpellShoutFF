@@ -31,9 +31,9 @@ namespace hooks
             newNode->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
             // newNode->data.flags.swapTarget = true;
             newNode->data.comparisonValue.f = 1.0f;
-            // ConditionParam cond_param;
-            // cond_param.form = nullptr;
-            newNode->data.functionData.params[0] = nullptr;
+            ConditionParam cond_param;
+            cond_param.form = nullptr;
+            newNode->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
 
             if (formConditions.head == nullptr)
             {
