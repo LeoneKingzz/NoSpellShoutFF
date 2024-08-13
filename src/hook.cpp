@@ -19,7 +19,6 @@ namespace hooks
                         if (const auto newNode = new RE::TESConditionItem)
                         {
                             newNode->next = nullptr;
-                            //newNode->data = conditionData;
                             newNode->data.object = RE::CONDITIONITEMOBJECT::kSelf;
                             newNode->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
                             newNode->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
@@ -29,8 +28,7 @@ namespace hooks
                             if (formConditions.head == nullptr)
                             {
                                 formConditions.head = newNode;
-                            }
-                            else{
+                            }else{
                                 auto *current = formConditions.head;
                                 while (current->next != nullptr)
                                 {
@@ -38,12 +36,11 @@ namespace hooks
                                 }
                                 current->next = newNode;
                             }
-
-
                         }
                     }
-                    // RE::CONDITION_ITEM_DATA condData;
-                    // std::vector<RE::CONDITION_ITEM_DATA> dataVec{};
+                    // newNode->data = conditionData;
+                    //  RE::CONDITION_ITEM_DATA condData;
+                    //  std::vector<RE::CONDITION_ITEM_DATA> dataVec{};
                 }
             }
         }
