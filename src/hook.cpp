@@ -31,7 +31,7 @@ namespace hooks
                 // logger::info("Patching Conditions");
                 // logger::info("Protagnist {} ReflexScore {}"sv, a_actor->GetName(), dodge_chance); auto HdSingle = RE::TESDataHandler::GetSingleton();
                 auto formConditions = EachMagicEffect->baseEffect->conditions;
-                const auto newNode = new RE::TESConditionItem;
+                auto newNode = new RE::TESConditionItem;
                 newNode->next = nullptr;
                 newNode->data.object = RE::CONDITIONITEMOBJECT::kSelf;
                 newNode->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
@@ -40,7 +40,7 @@ namespace hooks
                 newNode->data.comparisonValue.f = 1.0f;
                 // ConditionParam cond_param;
                 // cond_param.form = nullptr;
-                newNode->data.functionData.params[0] = nullptr;
+                //newNode->data.functionData.params[0] = nullptr;
 
                 if (formConditions.head == nullptr)
                 {
