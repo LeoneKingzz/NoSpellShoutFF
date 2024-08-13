@@ -12,7 +12,7 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 	case SKSE::MessagingInterface::kDataLoaded:
 		break;
 	case SKSE::MessagingInterface::kPostLoad:
-		//hooks::util::install();
+		hooks::util::install();
 		break;
 	case SKSE::MessagingInterface::kPostPostLoad:
 		//hooks::util::install();
@@ -20,7 +20,7 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 	case SKSE::MessagingInterface::kPreLoadGame:
 		break;
 	case SKSE::MessagingInterface::kPostLoadGame:
-		hooks::util::install();
+		//hooks::util::install();
 		break;
 	case SKSE::MessagingInterface::kNewGame:
 		break;
