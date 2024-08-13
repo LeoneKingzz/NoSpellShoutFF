@@ -13,6 +13,13 @@ namespace hooks
 
 
 	public:
+		union ConditionParam
+		{
+			char c;
+			std::int32_t i;
+			float f;
+			RE::TESForm *form;
+		};
 		static void install();
 
 		template <class T>
