@@ -26,14 +26,16 @@ namespace hooks
             auto formConditions = EachMagicEffect->conditions;
             auto newNode = new RE::TESConditionItem;
             newNode->next = nullptr;
-            newNode->data.object = RE::CONDITIONITEMOBJECT::kTarget;
-            newNode->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
-            newNode->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
+            RE::CONDITION_ITEM_DATA condData;
+            condData.object = RE::CONDITIONITEMOBJECT::kTarget;
+            condData.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
+            condData.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
             // newNode->data.flags.swapTarget = true;
-            newNode->data.comparisonValue.f = 1.0f;
+            condData.comparisonValue.f = 1.0f;
             //ConditionParam cond_param;
             //cond_param.form = nullptr;
             //newNode->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
+            newNode->data = condData;
 
             if (formConditions.head == nullptr)
             {
