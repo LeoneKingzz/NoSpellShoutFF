@@ -25,29 +25,31 @@ namespace hooks
                         //logger::info("Patching Conditions");
                         //logger::info("Protagnist {} ReflexScore {}"sv, a_actor->GetName(), dodge_chance); auto HdSingle = RE::TESDataHandler::GetSingleton();
                         auto formConditions = EachMagicEffect->baseEffect->conditions;
-                        RE::TESConditionItem* newNode; // new RE::TESConditionItem;
-                        newNode->next = nullptr;
-                        newNode->data.object = RE::CONDITIONITEMOBJECT::kSelf;
-                        newNode->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
-                        newNode->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
-                        // newNode->data.flags.swapTarget = true;
-                        newNode->data.comparisonValue.f = 1.0f;
-                        // ConditionParam cond_param;
-                        // cond_param.form = nullptr;
-                        newNode->data.functionData.params[0] = nullptr;
+                        const auto newNode = new RE::TESConditionItem;
+                        if (newNode){
+                            newNode->next = nullptr;
+                            newNode->data.object = RE::CONDITIONITEMOBJECT::kSelf;
+                            newNode->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
+                            newNode->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
+                            // newNode->data.flags.swapTarget = true;
+                            newNode->data.comparisonValue.f = 1.0f;
+                            // ConditionParam cond_param;
+                            // cond_param.form = nullptr;
+                            newNode->data.functionData.params[0] = nullptr;
 
-                        if (formConditions.head == nullptr)
-                        {
-                            formConditions.head = newNode;
-                        }
-                        else
-                        {
-                            auto *current = formConditions.head;
-                            while (current->next != nullptr)
+                            if (formConditions.head == nullptr)
                             {
-                                current = current->next;
+                                formConditions.head = newNode;
                             }
-                            current->next = newNode;
+                            else
+                            {
+                                auto *current = formConditions.head;
+                                while (current->next != nullptr)
+                                {
+                                    current = current->next;
+                                }
+                                current->next = newNode;
+                            }
                         }
                     }
                 }
