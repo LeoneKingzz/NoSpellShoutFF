@@ -26,7 +26,7 @@ namespace hooks
                         for (auto EachMagicEffect : MagiceffectList)
                         {
                             auto formConditions = EachMagicEffect->baseEffect->conditions;
-                            const auto newNode = new RE::TESConditionItem;
+                            auto newNode = new RE::TESConditionItem;
                             if (newNode)
                             {
                                 newNode->next = nullptr;
