@@ -33,7 +33,7 @@ namespace hooks
             newNode->data.comparisonValue.f = 1.0f;
             // ConditionParam cond_param;
             // cond_param.form = nullptr;
-            // newNode->data.functionData.params[0] = nullptr;
+            newNode->data.functionData.params[0] = nullptr;
 
             if (formConditions.head == nullptr)
             {
