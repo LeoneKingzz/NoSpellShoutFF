@@ -28,6 +28,7 @@ namespace hooks
                             if (formConditions.head == nullptr)
                             {
                                 formConditions.head = newNode;
+                                
                             }else{
                                 auto *current = formConditions.head;
                                 while (current->next != nullptr)
