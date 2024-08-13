@@ -12,10 +12,10 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 	case SKSE::MessagingInterface::kDataLoaded:
 		break;
 	case SKSE::MessagingInterface::kPostLoad:
-		hooks::util::install();
+		//hooks::util::install();
 		break;
 	case SKSE::MessagingInterface::kPostPostLoad:
-		//hooks::util::install();
+		hooks::util::install();
 		break;
 	case SKSE::MessagingInterface::kPreLoadGame:
 		break;
