@@ -27,16 +27,14 @@ namespace hooks
 		{
 			std::vector<T *> result;
 
-			if (const auto dataHandler = RE::TESDataHandler::GetSingleton(); dataHandler)
+			const auto dataHandler = RE::TESDataHandler::GetSingleton();
+			for (const auto &form : dataHandler->GetFormArray<T>())
 			{
-				for (const auto &form : dataHandler->GetFormArray<T>())
+				if (!form)
 				{
-					if (!form)
-					{
-						continue;
-					}
-					result.push_back(form);
+					continue;
 				}
+				result.push_back(form);
 			}
 
 			return result;
