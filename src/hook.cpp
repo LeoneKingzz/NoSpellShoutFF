@@ -6,6 +6,7 @@ namespace hooks
     void util::install()
     {
         auto Triss = get_all<RE::SpellItem>();
+        logger::info("Patching Conditions");
 
         for (RE::SpellItem *Yen: Triss)
         {
@@ -21,10 +22,10 @@ namespace hooks
                 {
                     if ((EachMagicEffect->baseEffect->data.flags.all(RE::EffectSetting::EffectSettingData::Flag::kHostile) || EachMagicEffect->baseEffect->HasKeyword(MagicDamageFire) || EachMagicEffect->baseEffect->HasKeyword(MagicDamageFrost) || EachMagicEffect->baseEffect->HasKeyword(MagicDamageShock) || EachMagicEffect->baseEffect->HasKeyword(MagicShout)) && (EachMagicEffect->baseEffect->HasArchetype(RE::EffectSetting::Archetype::kValueModifier) || EachMagicEffect->baseEffect->HasArchetype(RE::EffectSetting::Archetype::kPeakValueModifier) || EachMagicEffect->baseEffect->HasArchetype(RE::EffectSetting::Archetype::kStagger) || EachMagicEffect->baseEffect->HasArchetype(RE::EffectSetting::Archetype::kDemoralize) || EachMagicEffect->baseEffect->HasArchetype(RE::EffectSetting::Archetype::kParalysis) || EachMagicEffect->baseEffect->HasArchetype(RE::EffectSetting::Archetype::kAbsorb) || EachMagicEffect->baseEffect->HasArchetype(RE::EffectSetting::Archetype::kFrenzy)))
                     {
-                        logger::info("Patching Conditions");
-                        //logger::info("Protagnist {} ReflexScore {}"sv, a_actor->GetName(), dodge_chance);
+                        //logger::info("Patching Conditions");
+                        //logger::info("Protagnist {} ReflexScore {}"sv, a_actor->GetName(), dodge_chance); auto HdSingle = RE::TESDataHandler::GetSingleton();
                         auto formConditions = EachMagicEffect->baseEffect->conditions;
-                        auto newNode = new RE::TESConditionItem;
+                        RE::TESConditionItem* newNode; // new RE::TESConditionItem;
                         newNode->next = nullptr;
                         newNode->data.object = RE::CONDITIONITEMOBJECT::kSelf;
                         newNode->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
@@ -52,5 +53,6 @@ namespace hooks
                 }
             }
         }
+        logger::info("Patch Complete");
     }
 }
