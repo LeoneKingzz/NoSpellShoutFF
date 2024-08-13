@@ -28,7 +28,7 @@ namespace hooks
             newNode->next = nullptr;
             auto player = RE::PlayerCharacter::GetSingleton();
             RE::CONDITION_ITEM_DATA condData;
-            condData.object = RE::CONDITIONITEMOBJECT::kTarget;
+            condData.object = RE::CONDITIONITEMOBJECT::kSelf;
             condData.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
             condData.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
             // newNode->data.flags.swapTarget = true;
