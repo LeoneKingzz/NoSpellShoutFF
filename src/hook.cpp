@@ -5,7 +5,7 @@ namespace hooks
 
     void util::install()
     {
-        const auto dataHandler = RE::TESDataHandler::GetSingleton();
+        //const auto dataHandler = RE::TESDataHandler::GetSingleton();
         auto MagiceffectList = get_all<RE::EffectSetting>();
 
         static auto MagicDamageFire = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("MagicDamageFire");
