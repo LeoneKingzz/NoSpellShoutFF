@@ -33,7 +33,7 @@ namespace hooks
                                 newNode->data.object = RE::CONDITIONITEMOBJECT::kSelf;
                                 newNode->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
                                 newNode->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
-                                newNode->data.flags.swapTarget = true;
+                                //newNode->data.flags.swapTarget = true;
                                 newNode->data.comparisonValue.f = 1.0f;
                                 // ConditionParam cond_param;
                                 // cond_param.form = nullptr;
