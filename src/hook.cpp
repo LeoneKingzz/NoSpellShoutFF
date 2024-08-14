@@ -61,6 +61,10 @@ namespace hooks
             // ConditionParam cond_param;
             // cond_param.form = const_cast<RE::TESObjectREFR*>(player->As<RE::TESObjectREFR>());
             // newNode->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
+            //RE::TESCondition *condition = nullptr;
+
+            //RE::MagicItem* magicItem;
+            //condition = 10 < magicItem->effects.size() ? &magicItem->effects[10]->conditions : nullptr;
             //newNode->data = condData;
 
             if (formConditions.head == nullptr)
