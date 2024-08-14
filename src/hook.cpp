@@ -27,6 +27,7 @@ namespace hooks
             static RE::TESConditionItem* cond;
             //static std::once_flag flag;
             auto player = RE::PlayerCharacter::GetSingleton();
+            cond->next = nullptr;
             cond->data.object = RE::CONDITIONITEMOBJECT::kSelf;
             cond->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
             cond->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
@@ -39,7 +40,6 @@ namespace hooks
             RE::ConditionCheckParams params(nullptr, const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>()));
 
             //auto newNode = new RE::TESConditionItem;
-            cond->next = nullptr;
             // RE::CONDITION_ITEM_DATA condData;
             // condData.object = RE::CONDITIONITEMOBJECT::kSelf;
             // condData.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
