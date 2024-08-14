@@ -25,19 +25,21 @@ namespace hooks
             // logger::info("Protagnist {} ReflexScore {}"sv, a_actor->GetName(), dodge_chance); auto HdSingle = RE::TESDataHandler::GetSingleton();
             auto formConditions = EachMagicEffect->conditions;
             static RE::TESConditionItem* cond;
+            static std::once_flag flag;
             //static std::once_flag flag;
             auto player = RE::PlayerCharacter::GetSingleton();
             cond->next = nullptr;
-            cond->data.object = RE::CONDITIONITEMOBJECT::kSelf;
-            cond->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
-            cond->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
-            cond->data.comparisonValue.f = 1.0f;
-
+            std::call_once(flag, [&](){
+                cond->data.object = RE::CONDITIONITEMOBJECT::kSelf;
+                cond->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
+                cond->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
+                cond->data.comparisonValue.f = 1.0f; 
+            });
             ConditionParam cond_param;
             cond_param.form = const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>());
             cond->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
 
-            RE::ConditionCheckParams params(nullptr, const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>()));
+            //RE::ConditionCheckParams params(nullptr, const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>()));
 
             //auto newNode = new RE::TESConditionItem;
             // RE::CONDITION_ITEM_DATA condData;
