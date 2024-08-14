@@ -24,7 +24,8 @@ namespace hooks
             // logger::info("Patching Conditions");
             // logger::info("Protagnist {} ReflexScore {}"sv, a_actor->GetName(), dodge_chance); auto HdSingle = RE::TESDataHandler::GetSingleton();
             auto formConditions = EachMagicEffect->conditions;
-            static RE::TESConditionItem* cond;
+            auto cond = new RE::TESConditionItem;
+            //static RE::TESConditionItem* cond;
             static std::once_flag flag;
             //static std::once_flag flag;
             auto player = RE::PlayerCharacter::GetSingleton();
@@ -39,7 +40,7 @@ namespace hooks
             cond_param.form = const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>());
             cond->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
 
-            //RE::ConditionCheckParams params(nullptr, const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>()));
+            RE::ConditionCheckParams params(nullptr, const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>()));
 
             //auto newNode = new RE::TESConditionItem;
             // RE::CONDITION_ITEM_DATA condData;
