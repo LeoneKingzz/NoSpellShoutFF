@@ -30,10 +30,13 @@ namespace hooks
             //static std::once_flag flag;
             auto player = RE::PlayerCharacter::GetSingleton();
             cond->next = nullptr;
-            cond->data.object.set(RE::CONDITIONITEMOBJECT::kSelf); // RE::CONDITIONITEMOBJECT::kSelf;
-            cond->data.functionData.function.set(RE::FUNCTION_DATA::FunctionID::kIsHostileToActor);
+            auto yep = cond->data.object.get();
+            auto dep = cond->data.functionData.function.get();
+            yep = RE::CONDITIONITEMOBJECT::kSelf;
+            dep = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
+            //cond->data.object.set(RE::CONDITIONITEMOBJECT::kSelf); // RE::CONDITIONITEMOBJECT::kSelf;
             //yep = RE::CONDITIONITEMOBJECT::kSelf;
-            cond->data.functionData.function.set(RE::FUNCTION_DATA::FunctionID::kIsHostileToActor);
+            //cond->data.functionData.function.set(RE::FUNCTION_DATA::FunctionID::kIsHostileToActor);
             cond->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
             cond->data.comparisonValue.f = 1.0f;
             // std::call_once(flag, [&](){
