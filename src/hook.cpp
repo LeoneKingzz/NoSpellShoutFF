@@ -1,4 +1,5 @@
 #include "hook.h"
+//#include <frozen/map.h>
 
 namespace hooks
 {
@@ -21,51 +22,18 @@ namespace hooks
                 continue;
             }
             logger::info("Patching Conditions");
-            // logger::info("Patching Conditions");
             // logger::info("Protagnist {} ReflexScore {}"sv, a_actor->GetName(), dodge_chance); auto HdSingle = RE::TESDataHandler::GetSingleton();
+            RE::CONDITION_ITEM_DATA condData;
+            condData.object = RE::CONDITIONITEMOBJECT::kSelf;
+            condData.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
+            condData.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
+            // // newNode->data.flags.swapTarget = true;
+            condData.comparisonValue.f = 1.0f;
             auto formConditions = EachMagicEffect->conditions;
             auto cond = new RE::TESConditionItem;
-            //static RE::TESConditionItem* cond;
-            //static std::once_flag flag;
-            //static std::once_flag flag;
-            auto player = RE::PlayerCharacter::GetSingleton();
             cond->next = nullptr;
-            auto yep = cond->data.object.get();
-            auto dep = cond->data.functionData.function.get();
-            yep = RE::CONDITIONITEMOBJECT::kSelf;
-            dep = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
-            //cond->data.object.set(RE::CONDITIONITEMOBJECT::kSelf); // RE::CONDITIONITEMOBJECT::kSelf;
-            //yep = RE::CONDITIONITEMOBJECT::kSelf;
-            //cond->data.functionData.function.set(RE::FUNCTION_DATA::FunctionID::kIsHostileToActor);
-            cond->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
-            cond->data.comparisonValue.f = 1.0f;
-            // std::call_once(flag, [&](){
-            //     cond->data.object = RE::CONDITIONITEMOBJECT::kSelf;
-            //     cond->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
-            //     cond->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
-            //     cond->data.comparisonValue.f = 1.0f; 
-            // });
-            ConditionParam cond_param;
-            cond_param.form = const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>());
-            cond->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
-
-            RE::ConditionCheckParams params(nullptr, const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>()));
-
-            //auto newNode = new RE::TESConditionItem;
-            // RE::CONDITION_ITEM_DATA condData;
-            // condData.object = RE::CONDITIONITEMOBJECT::kSelf;
-            // condData.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
-            // condData.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
-            // // newNode->data.flags.swapTarget = true;
-            // condData.comparisonValue.f = 1.0f;
-            // ConditionParam cond_param;
-            // cond_param.form = const_cast<RE::TESObjectREFR*>(player->As<RE::TESObjectREFR>());
-            // newNode->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
-            //RE::TESCondition *condition = nullptr;
-
-            //RE::MagicItem* magicItem;
-            //condition = 10 < magicItem->effects.size() ? &magicItem->effects[10]->conditions : nullptr;
-            //newNode->data = condData;
+         
+            cond->data = condData;
 
             if (formConditions.head == nullptr)
             {
@@ -73,12 +41,14 @@ namespace hooks
             }
             else
             {
-                auto *current = formConditions.head;
-                while (current->next != nullptr)
-                {
-                    current = current->next;
-                }
-                current->next = cond;
+                cond->next = formConditions.head;
+                formConditions.head = cond;
+                // auto current = formConditions.head;
+                // while (current->next != nullptr)
+                // {
+                //     current = current->next;
+                // }
+                // current->next = cond;
             }
             logger::info("Parsing Next Conditions");
         }
