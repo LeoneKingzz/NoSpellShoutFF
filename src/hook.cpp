@@ -24,23 +24,38 @@ namespace hooks
             // logger::info("Patching Conditions");
             // logger::info("Protagnist {} ReflexScore {}"sv, a_actor->GetName(), dodge_chance); auto HdSingle = RE::TESDataHandler::GetSingleton();
             auto formConditions = EachMagicEffect->conditions;
-            auto newNode = new RE::TESConditionItem;
-            newNode->next = nullptr;
+            static RE::TESConditionItem* cond;
+            static std::once_flag flag;
             auto player = RE::PlayerCharacter::GetSingleton();
-            RE::CONDITION_ITEM_DATA condData;
-            condData.object = RE::CONDITIONITEMOBJECT::kSelf;
-            condData.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
-            condData.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
-            // newNode->data.flags.swapTarget = true;
-            condData.comparisonValue.f = 1.0f;
+            std::call_once(flag, [&](){
+                cond->data.object = RE::CONDITIONITEMOBJECT::kSelf;
+                cond->data.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
+                cond->data.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
+                cond->data.comparisonValue.f = 1.0f; 
+            });
+
             ConditionParam cond_param;
-            cond_param.form = const_cast<RE::TESObjectREFR*>(player->As<RE::TESObjectREFR>());
-            newNode->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
-            newNode->data = condData;
+            cond_param.form = const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>());
+            cond->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
+
+            RE::ConditionCheckParams params(nullptr, const_cast<RE::TESObjectREFR *>(player->As<RE::TESObjectREFR>()));
+
+            //auto newNode = new RE::TESConditionItem;
+            cond->next = nullptr;
+            // RE::CONDITION_ITEM_DATA condData;
+            // condData.object = RE::CONDITIONITEMOBJECT::kSelf;
+            // condData.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
+            // condData.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
+            // // newNode->data.flags.swapTarget = true;
+            // condData.comparisonValue.f = 1.0f;
+            // ConditionParam cond_param;
+            // cond_param.form = const_cast<RE::TESObjectREFR*>(player->As<RE::TESObjectREFR>());
+            // newNode->data.functionData.params[0] = std::bit_cast<void *>(cond_param);
+            //newNode->data = condData;
 
             if (formConditions.head == nullptr)
             {
-                formConditions.head = newNode;
+                formConditions.head = cond;
             }
             else
             {
@@ -49,7 +64,7 @@ namespace hooks
                 {
                     current = current->next;
                 }
-                current->next = newNode;
+                current->next = cond;
             }
             logger::info("Parsing Next Conditions");
         }
