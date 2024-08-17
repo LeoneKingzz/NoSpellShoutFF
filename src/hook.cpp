@@ -1,57 +1,127 @@
 #include "hook.h"
-//#include <frozen/map.h>
 
 namespace hooks
 {
+    RE::TESForm;
+    void on_animation_event::GetEquippedShout(RE::Actor *actor, bool SpellFire){
+        auto limboshout = actor->GetActorRuntimeData().selectedPower;
 
-    void util::install()
-    {
-        //const auto dataHandler = RE::TESDataHandler::GetSingleton();
-        auto MagiceffectList = get_all<RE::EffectSetting>();
+        if (limboshout && limboshout->Is(RE::FormType::Shout)){
+            auto data = RE::TESDataHandler::GetSingleton();
+            auto Hen = limboshout->As<RE::TESShout>()->variations->spell->GetKeywords();
 
-        static auto MagicDamageFire = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("MagicDamageFire");
-        static auto MagicDamageFrost = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("MagicDamageFrost");
-        static auto MagicDamageShock = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("MagicDamageShock");
-        static auto MagicShout = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("MagicShout");
+            for (RE::BGSKeyword* Yen : Hen){
+                std::string_view Lsht = (clib_util::editorID::get_editorID(Yen)).data();
+                switch (hash(Lsht.data(), Lsht.size())){
+                case "DSV_UnrelentingForce"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x802, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x800, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
 
-        for (auto EachMagicEffect : MagiceffectList)
-        {
-            if (!((EachMagicEffect->data.flags.all(RE::EffectSetting::EffectSettingData::Flag::kHostile) || EachMagicEffect->HasKeyword(MagicDamageFire) || EachMagicEffect->HasKeyword(MagicDamageFrost) || EachMagicEffect->HasKeyword(MagicDamageShock) || EachMagicEffect->HasKeyword(MagicShout)) && (EachMagicEffect->HasArchetype(RE::EffectSetting::Archetype::kValueModifier) || EachMagicEffect->HasArchetype(RE::EffectSetting::Archetype::kPeakValueModifier) || EachMagicEffect->HasArchetype(RE::EffectSetting::Archetype::kStagger) || EachMagicEffect->HasArchetype(RE::EffectSetting::Archetype::kDemoralize) || EachMagicEffect->HasArchetype(RE::EffectSetting::Archetype::kParalysis) || EachMagicEffect->HasArchetype(RE::EffectSetting::Archetype::kAbsorb) || EachMagicEffect->HasArchetype(RE::EffectSetting::Archetype::kFrenzy))))
-            {
-                logger::info("Skipping Invalid Magic Effect");
-                continue;
+                case "DSV_Dismay"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x805, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x804, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_IceForm"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x807, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x806, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_Disarm"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x809, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x808, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_FrostBreath"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80B, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80A, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_PhantomForm"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80D, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80C, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_ElementalFury"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80F, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80E, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                case "DSV_BecomeEthereal"_h:
+                    if (SpellFire){
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x811, "DraugrShoutVoicing.esp")));
+                    }else{
+                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x810, "DraugrShoutVoicing.esp")));
+                    }
+                    break;
+
+                default:
+
+                    break;
+                }
             }
-            logger::info("Patching Conditions");
-            // logger::info("Protagnist {} ReflexScore {}"sv, a_actor->GetName(), dodge_chance); auto HdSingle = RE::TESDataHandler::GetSingleton();
-            RE::CONDITION_ITEM_DATA condData;
-            condData.object = RE::CONDITIONITEMOBJECT::kSelf;
-            condData.functionData.function = RE::FUNCTION_DATA::FunctionID::kIsHostileToActor;
-            condData.flags.opCode = RE::CONDITION_ITEM_DATA::OpCode::kEqualTo;
-            // // newNode->data.flags.swapTarget = true;
-            condData.comparisonValue.f = 1.0f;
-            auto formConditions = EachMagicEffect->conditions;
-            auto cond = new RE::TESConditionItem;
-            cond->next = nullptr;
-         
-            cond->data = condData;
-
-            if (formConditions.head == nullptr)
-            {
-                formConditions.head = cond;
-            }
-            else
-            {
-                cond->next = formConditions.head;
-                formConditions.head = cond;
-                // auto current = formConditions.head;
-                // while (current->next != nullptr)
-                // {
-                //     current = current->next;
-                // }
-                // current->next = cond;
-            }
-            logger::info("Parsing Next Conditions");
         }
-        logger::info("Patching Complete");
     }
+
+
+	void on_animation_event::ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
+	{
+		if (!a_event->holder) {
+			return;
+		}
+		std::string_view eventTag = a_event->tag.data();
+		RE::Actor* actor = const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>();
+        auto data = RE::TESDataHandler::GetSingleton();
+        if(actor->GetActorBase()->GetVoiceType() == data->LookupForm<RE::BGSVoiceType>(0x1F1CD, "Skyrim.esm")){
+            switch (hash(eventTag.data(), eventTag.size())){
+            case "BeginCastVoice"_h:
+
+                GetEquippedShout(actor);
+
+                break;
+
+            case "Voice_SpellFire_Event"_h:
+
+                GetEquippedShout(actor, true);
+
+                break;
+            }
+        }
+        
+	}
+
+	EventResult on_animation_event::ProcessEvent_NPC(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
+	{
+		ProcessEvent(a_sink, a_event, a_eventSource);
+		return _ProcessEvent_NPC(a_sink, a_event, a_eventSource);
+	}
+
+    EventResult on_animation_event::ProcessEvent_PC(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
+	{
+		ProcessEvent(a_sink, a_event, a_eventSource);
+		return _ProcessEvent_PC(a_sink, a_event, a_eventSource);
+	}
+
 }
