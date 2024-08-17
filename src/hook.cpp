@@ -2,89 +2,11 @@
 
 namespace hooks
 {
-    RE::TESForm;
-    void on_animation_event::GetEquippedShout(RE::Actor *actor, bool SpellFire){
-        auto limboshout = actor->GetActorRuntimeData().selectedPower;
-
-        if (limboshout && limboshout->Is(RE::FormType::Shout)){
-            auto data = RE::TESDataHandler::GetSingleton();
-            auto Hen = limboshout->As<RE::TESShout>()->variations->spell->GetKeywords();
-
-            for (RE::BGSKeyword* Yen : Hen){
-                std::string_view Lsht = (clib_util::editorID::get_editorID(Yen)).data();
-                switch (hash(Lsht.data(), Lsht.size())){
-                case "DSV_UnrelentingForce"_h:
-                    if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x802, "DraugrShoutVoicing.esp")));
-                    }else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x800, "DraugrShoutVoicing.esp")));
-                    }
-                    break;
-
-                case "DSV_Dismay"_h:
-                    if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x805, "DraugrShoutVoicing.esp")));
-                    }else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x804, "DraugrShoutVoicing.esp")));
-                    }
-                    break;
-
-                case "DSV_IceForm"_h:
-                    if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x807, "DraugrShoutVoicing.esp")));
-                    }else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x806, "DraugrShoutVoicing.esp")));
-                    }
-                    break;
-
-                case "DSV_Disarm"_h:
-                    if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x809, "DraugrShoutVoicing.esp")));
-                    }else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x808, "DraugrShoutVoicing.esp")));
-                    }
-                    break;
-
-                case "DSV_FrostBreath"_h:
-                    if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80B, "DraugrShoutVoicing.esp")));
-                    }else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80A, "DraugrShoutVoicing.esp")));
-                    }
-                    break;
-
-                case "DSV_PhantomForm"_h:
-                    if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80D, "DraugrShoutVoicing.esp")));
-                    }else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80C, "DraugrShoutVoicing.esp")));
-                    }
-                    break;
-
-                case "DSV_ElementalFury"_h:
-                    if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80F, "DraugrShoutVoicing.esp")));
-                    }else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x80E, "DraugrShoutVoicing.esp")));
-                    }
-                    break;
-
-                case "DSV_BecomeEthereal"_h:
-                    if (SpellFire){
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x811, "DraugrShoutVoicing.esp")));
-                    }else{
-                        util::playSound(actor, (data->LookupForm<RE::BGSSoundDescriptorForm>(0x810, "DraugrShoutVoicing.esp")));
-                    }
-                    break;
-
-                default:
-
-                    break;
-                }
-            }
-        }
+    void hooks::on_animation_event::setglobals(){
+        auto HdSingle = RE::TESDataHandler::GetSingleton();
+        auto DS = GetSingleton();
+        DS->NSSFFLK_Enable = skyrim_cast<RE::TESGlobal*>(HdSingle->LookupForm(0x800, "No Spell Shout FF.esp"));
     }
-
 
 	void on_animation_event::ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
 	{
@@ -93,24 +15,22 @@ namespace hooks
 		}
 		std::string_view eventTag = a_event->tag.data();
 		RE::Actor* actor = const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>();
-        auto data = RE::TESDataHandler::GetSingleton();
-        if(actor->GetActorBase()->GetVoiceType() == data->LookupForm<RE::BGSVoiceType>(0x1F1CD, "Skyrim.esm")){
-            switch (hash(eventTag.data(), eventTag.size())){
-            case "BeginCastVoice"_h:
-
-                GetEquippedShout(actor);
-
-                break;
-
-            case "Voice_SpellFire_Event"_h:
-
-                GetEquippedShout(actor, true);
-
-                break;
-            }
+        if (!actor->IsPlayerRef()){
+            return;
         }
-        
-	}
+        auto DS = GetSingleton();
+        switch (hash(eventTag.data(), eventTag.size())){
+        case "SneakStart"_h:
+            
+            DS->NSSFFLK_Enable->value = 0.0f;
+            break;
+
+        case "SneakStop"_h:
+
+            DS->NSSFFLK_Enable->value = 1.0f;
+            break;
+        }
+    }
 
 	EventResult on_animation_event::ProcessEvent_NPC(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
 	{

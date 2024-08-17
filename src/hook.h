@@ -12,6 +12,11 @@ namespace hooks
 	class on_animation_event
 	{
 	public:
+		static on_animation_event *GetSingleton()
+		{
+			static on_animation_event singleton;
+			return &singleton;
+		}
 		static void install()
 		{
 			REL::Relocation<uintptr_t> AnimEventVtbl_NPC{ RE::VTABLE_Character[2] };
@@ -21,7 +26,8 @@ namespace hooks
 			_ProcessEvent_PC = AnimEventVtbl_PC.write_vfunc(0x1, ProcessEvent_PC);
 			logger::info("hook:on_animation_event");
 		}
-        static void GetEquippedShout(RE::Actor *actor, bool SpellFire = false);
+		RE::TESGlobal* NSSFFLK_Enable;
+		static void setglobals();
 
     private:
 		static inline void ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource);
