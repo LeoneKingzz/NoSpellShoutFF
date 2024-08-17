@@ -6,6 +6,7 @@ namespace hooks
         auto HdSingle = RE::TESDataHandler::GetSingleton();
         auto DS = GetSingleton();
         DS->NSSFFLK_Enable = skyrim_cast<RE::TESGlobal*>(HdSingle->LookupForm(0x800, "No Spell Shout FF.esp"));
+        DS->NSSFFLK_Enable->value = 1.0f;
     }
 
 	void on_animation_event::ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
