@@ -20,14 +20,16 @@ namespace hooks
         }
         auto DS = GetSingleton();
         switch (hash(eventTag.data(), eventTag.size())){
-        case "SneakStart"_h:
-            
-            DS->NSSFFLK_Enable->value = 0.0f;
+        case "tailSneakIdle"_h:
+            if (DS->NSSFFLK_Enable->value != 0.0){
+                DS->NSSFFLK_Enable->value = 0.0f;
+            }
             break;
 
-        case "SneakStop"_h:
-
-            DS->NSSFFLK_Enable->value = 1.0f;
+        case "tailMTIdle"_h:
+            if (DS->NSSFFLK_Enable->value != 1.0){
+                DS->NSSFFLK_Enable->value = 1.0f;
+            }
             break;
         }
     }
