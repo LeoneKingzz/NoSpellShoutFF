@@ -27,7 +27,7 @@ namespace hooks
             }
             break;
 
-        case "tailMTIdle"_h:
+        case "SneakStop"_h:
             if (DS->NSSFFLK_Enable->value != 1.0){
                 DS->NSSFFLK_Enable->value = 1.0f;
             }
