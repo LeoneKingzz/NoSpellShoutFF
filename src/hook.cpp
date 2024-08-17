@@ -23,7 +23,11 @@ namespace hooks
         switch (hash(eventTag.data(), eventTag.size())){
         case "tailSneakIdle"_h:
             if (DS->NSSFFLK_Enable->value != 0.0){
-                DS->NSSFFLK_Enable->value = 0.0f;
+                if (!actor->IsInCombat()){
+                    DS->NSSFFLK_Enable->value = 0.0f;
+                }else{
+                    DS->NSSFFLK_Enable->value = 1.0f;
+                }
             }
             break;
 
