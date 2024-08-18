@@ -27,9 +27,13 @@ namespace hooks
             }
             break;
 
-        case "SneakStop"_h:
-            if (DS->NSSFFLK_Enable->value != 1.0){
-                DS->NSSFFLK_Enable->value = 1.0f;
+        case "MLh_SpellFire_Event"_h:
+        case "MRh_SpellFire_Event"_h:
+        case "Voice_SpellFire_Event"_h:
+            if (!actor->IsSneaking()){
+                if (DS->NSSFFLK_Enable->value != 1.0){
+                    DS->NSSFFLK_Enable->value = 1.0f;
+                }
             }
             break;
         }
