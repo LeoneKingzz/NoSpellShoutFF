@@ -11,8 +11,6 @@ namespace hooks
 
     void util::install(){
         auto eventSink = OurEventSink::GetSingleton();
-
-        // ScriptSource
         auto *eventSourceHolder = RE::ScriptEventSourceHolder::GetSingleton();
         eventSourceHolder->AddEventSink<RE::TESCombatEvent>(eventSink);
     }
