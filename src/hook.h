@@ -77,6 +77,8 @@ namespace hooks
 		}
 
 	public:
+		static void install();
+		
 		static void playSound(RE::Actor *a, RE::BGSSoundDescriptorForm *a_descriptor)
 		{
 			//logger::info("starting voicing....");

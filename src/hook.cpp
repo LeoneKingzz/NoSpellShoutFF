@@ -2,14 +2,64 @@
 
 namespace hooks
 {
-    void hooks::on_animation_event::setglobals(){
+    void on_animation_event::setglobals(){
         auto HdSingle = RE::TESDataHandler::GetSingleton();
         auto DS = GetSingleton();
         DS->NSSFFLK_Enable = skyrim_cast<RE::TESGlobal*>(HdSingle->LookupForm(0x800, "No Spell Shout FF.esp"));
         DS->NSSFFLK_Enable->value = 1.0f;
     }
 
-	void on_animation_event::ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
+    void util::install(){
+        auto eventSink = OurEventSink::GetSingleton();
+
+        // ScriptSource
+        auto *eventSourceHolder = RE::ScriptEventSourceHolder::GetSingleton();
+        eventSourceHolder->AddEventSink<RE::TESCombatEvent>(eventSink);
+    }
+
+    class OurEventSink : public RE::BSTEventSink<RE::TESCombatEvent>
+    {
+        OurEventSink() = default;
+        OurEventSink(const OurEventSink &) = delete;
+        OurEventSink(OurEventSink &&) = delete;
+        OurEventSink &operator=(const OurEventSink &) = delete;
+        OurEventSink &operator=(OurEventSink &&) = delete;
+
+    public:
+        static OurEventSink *GetSingleton()
+        {
+            static OurEventSink singleton;
+            return &singleton;
+        }
+
+        RE::BSEventNotifyControl ProcessEvent(const RE::TESCombatEvent *event, RE::BSTEventSource<RE::TESCombatEvent> *)
+        {
+            decltype(auto) sourceName = event->actor;
+            auto Protagonist = sourceName->As<RE::Actor>();
+
+            if (Protagonist->IsPlayerRef()){
+                return RE::BSEventNotifyControl::kContinue;
+            }
+            auto CombatTarget = Protagonist->GetActorRuntimeData().currentCombatTarget.get().get();
+
+            if (!CombatTarget){
+                return RE::BSEventNotifyControl::kContinue;
+            }
+
+            if (CombatTarget->IsPlayerRef() || CombatTarget->IsPlayerTeammate()){
+                auto getcombatstate = event->newState.get();
+                if (getcombatstate == RE::ACTOR_COMBAT_STATE::kCombat){
+                    auto DS = on_animation_event::GetSingleton();
+                    if (DS->NSSFFLK_Enable->value != 1.0){
+                        DS->NSSFFLK_Enable->value = 1.0f;
+                    }
+                }
+            }
+            return RE::BSEventNotifyControl::kContinue;
+        }
+    };
+
+    void on_animation_event::ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
 	{
 		if (!a_event->holder) {
 			return;

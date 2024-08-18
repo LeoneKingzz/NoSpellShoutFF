@@ -11,6 +11,7 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 	switch (a_msg->type) {
 	case SKSE::MessagingInterface::kDataLoaded:
 	    hooks::on_animation_event::install();
+		hooks::util::install();
 		break;
 	case SKSE::MessagingInterface::kPostLoad:
 		
