@@ -21,16 +21,14 @@ namespace hooks
         }
         auto DS = GetSingleton();
         switch (hash(eventTag.data(), eventTag.size())){
-        case "tailSneakIdle"_h:
-            if (DS->NSSFFLK_Enable->value != 0.0){
-                DS->NSSFFLK_Enable->value = 0.0f;
-            }
-            break;
-
         case "MLh_SpellFire_Event"_h:
         case "MRh_SpellFire_Event"_h:
         case "Voice_SpellFire_Event"_h:
-            if (!actor->IsSneaking()){
+            if (actor->IsSneaking() && !actor->IsInCombat()){
+                if (DS->NSSFFLK_Enable->value != 0.0){
+                    DS->NSSFFLK_Enable->value = 0.0f;
+                }
+            }else{
                 if (DS->NSSFFLK_Enable->value != 1.0){
                     DS->NSSFFLK_Enable->value = 1.0f;
                 }
