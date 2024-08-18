@@ -9,12 +9,6 @@ namespace hooks
         DS->NSSFFLK_Enable->value = 1.0f;
     }
 
-    void util::install(){
-        auto eventSink = OurEventSink::GetSingleton();
-        auto *eventSourceHolder = RE::ScriptEventSourceHolder::GetSingleton();
-        eventSourceHolder->AddEventSink<RE::TESCombatEvent>(eventSink);
-    }
-
     class OurEventSink : public RE::BSTEventSink<RE::TESCombatEvent>
     {
         OurEventSink() = default;
@@ -71,6 +65,12 @@ namespace hooks
             return RE::BSEventNotifyControl::kContinue;
         }
     };
+
+    void util::install(){
+        auto eventSink = OurEventSink::GetSingleton();
+        auto *eventSourceHolder = RE::ScriptEventSourceHolder::GetSingleton();
+        eventSourceHolder->AddEventSink<RE::TESCombatEvent>(eventSink);
+    }
 
     void on_animation_event::ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
 	{
