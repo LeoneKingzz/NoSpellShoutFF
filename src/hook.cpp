@@ -43,15 +43,9 @@ namespace hooks
                 return RE::BSEventNotifyControl::kContinue;
             }
             auto CombatTarget = Protagonist->GetActorRuntimeData().currentCombatTarget.get().get();
-
-            if (!CombatTarget){
-                return RE::BSEventNotifyControl::kContinue;
-            }
-
-            auto Playerhandle = RE::PlayerCharacter::GetSingleton();
             auto getcombatstate = event->newState.get();
 
-            if (CombatTarget->IsPlayerRef() || CombatTarget->IsPlayerTeammate()){
+            if (CombatTarget && CombatTarget->IsPlayerRef() || CombatTarget->IsPlayerTeammate()){
                 if (getcombatstate == RE::ACTOR_COMBAT_STATE::kCombat){
                     if (DS->NSSFFLK_Enable->value != 1.0){
                         DS->NSSFFLK_Enable->value = 1.0f;
@@ -59,8 +53,9 @@ namespace hooks
                     }
                 }
             }
-
+            auto Playerhandle = RE::PlayerCharacter::GetSingleton();
             auto combatGroup = Protagonist->GetCombatGroup();
+
             if (combatGroup){
                 for (auto it = combatGroup->targets.begin(); it != combatGroup->targets.end(); ++it){
                     if (it->targetHandle && it->targetHandle.get().get() && it->targetHandle.get().get() == Playerhandle){
@@ -73,7 +68,6 @@ namespace hooks
                     }
                 }
             }
-
             return RE::BSEventNotifyControl::kContinue;
         }
     };
