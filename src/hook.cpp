@@ -34,6 +34,10 @@ namespace hooks
 
         RE::BSEventNotifyControl ProcessEvent(const RE::TESCombatEvent *event, RE::BSTEventSource<RE::TESCombatEvent> *)
         {
+            auto DS = on_animation_event::GetSingleton();
+            if (DS->NSSFFLK_Enable->value == 1.0){
+                return RE::BSEventNotifyControl::kContinue;
+            }
             decltype(auto) sourceName = event->actor;
             auto Protagonist = sourceName->As<RE::Actor>();
 
@@ -46,15 +50,32 @@ namespace hooks
                 return RE::BSEventNotifyControl::kContinue;
             }
 
+            auto Playerhandle = RE::PlayerCharacter::GetSingleton();
+            auto getcombatstate = event->newState.get();
+
             if (CombatTarget->IsPlayerRef() || CombatTarget->IsPlayerTeammate()){
-                auto getcombatstate = event->newState.get();
                 if (getcombatstate == RE::ACTOR_COMBAT_STATE::kCombat){
-                    auto DS = on_animation_event::GetSingleton();
                     if (DS->NSSFFLK_Enable->value != 1.0){
                         DS->NSSFFLK_Enable->value = 1.0f;
+                        return RE::BSEventNotifyControl::kContinue;
                     }
                 }
             }
+
+            auto combatGroup = Protagonist->GetCombatGroup();
+            if (combatGroup){
+                for (auto it = combatGroup->targets.begin(); it != combatGroup->targets.end(); ++it){
+                    if (it->targetHandle && it->targetHandle.get().get() && it->targetHandle.get().get() == Playerhandle){
+                        if (getcombatstate == RE::ACTOR_COMBAT_STATE::kCombat){
+                            if (DS->NSSFFLK_Enable->value != 1.0){
+                                DS->NSSFFLK_Enable->value = 1.0f;
+                                return RE::BSEventNotifyControl::kContinue;
+                            }
+                        }
+                    }
+                }
+            }
+
             return RE::BSEventNotifyControl::kContinue;
         }
     };
