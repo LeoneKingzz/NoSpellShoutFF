@@ -9,6 +9,7 @@
         "rapidcsv",
         "fast-cpp-csv-parser",
         "rsm-binary-io",
-        "clib-util"
+        "clib-util",
+        "directxtk"
     ]
 }
