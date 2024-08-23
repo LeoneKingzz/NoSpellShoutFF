@@ -13,18 +13,10 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 	    hooks::on_animation_event::install();
 		hooks::util::install();
 		break;
-	case SKSE::MessagingInterface::kPostLoad:
-		
-		break;
-	case SKSE::MessagingInterface::kPostPostLoad:
-		
-		break;
-	case SKSE::MessagingInterface::kPreLoadGame:
-		break;
 	case SKSE::MessagingInterface::kPostLoadGame:
         hooks::on_animation_event::setglobals();
 		break;
-	case SKSE::MessagingInterface::kNewGame:
+	default:
 		break;
 	}
 }
