@@ -1,5 +1,5 @@
 //#include "SKSE/Trampoline.h"
-//#include "util.h"
+#include "util.h"
 #pragma once
 //#pragma warning(disable: 4100)
 
