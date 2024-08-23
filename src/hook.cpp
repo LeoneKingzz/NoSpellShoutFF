@@ -78,13 +78,13 @@ namespace hooks
 		if (!a_event->holder) {
 			return;
 		}
-		std::string_view eventTag = a_event->tag.data();
+		//std::string_view eventTag = a_event->tag.data();
 		RE::Actor* actor = const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>();
         if (!actor->IsPlayerRef()){
             return;
         }
         auto DS = GetSingleton();
-        switch (hash(eventTag.data(), eventTag.size())){
+        switch (hash(a_event->tag.c_str(), a_event->tag.size())){
         case "MLh_SpellFire_Event"_h:
         case "MRh_SpellFire_Event"_h:
         case "Voice_SpellFire_Event"_h:
