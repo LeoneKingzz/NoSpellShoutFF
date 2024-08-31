@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RE/B/BSPointerHandle.h"
+#include "RE/B/BSResourceHandle.h"
 #include "RE/B/BSSoundHandle.h"
 #include "RE/F/FormTypes.h"
 #include "RE/N/NiSmartPointer.h"
@@ -79,11 +80,13 @@ namespace RE
 
 		// members
 #ifndef ENABLE_SKYRIM_AE
-		HAZARD_RUNTIME_DATA_CONTENT
+		HAZARD_RUNTIME_DATA_CONTENT;
 #endif
+	private:
+		KEEP_FOR_RE()
 	};
 #ifndef ENABLE_SKYRIM_AE
-	static_assert(sizeof(Hazard) == 0xD8);
+static_assert(sizeof(Hazard) == 0xD8);
 #endif
 }
 #undef HAZARD_RUNTIME_DATA_CONTENT

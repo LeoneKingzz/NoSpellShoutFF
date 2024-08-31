@@ -93,6 +93,7 @@ namespace RE
 	{
 	public:
 		inline static constexpr auto RTTI = RTTI_ActorState;
+		inline static constexpr auto VTABLE = VTABLE_ActorState;
 
 		struct ActorState1
 		{
@@ -181,6 +182,7 @@ namespace RE
 			}
 		}
 
+		[[nodiscard]] bool IsReanimated() const noexcept { return GetLifeState() == ACTOR_LIFE_STATE::kReanimate; }
 		[[nodiscard]] bool IsSneaking() const noexcept { return static_cast<bool>(actorState1.sneaking); }
 		[[nodiscard]] bool IsSprinting() const noexcept { return static_cast<bool>(actorState1.sprinting); }
 		[[nodiscard]] bool IsSwimming() const noexcept { return static_cast<bool>(actorState1.swimming); }
@@ -202,6 +204,8 @@ namespace RE
 		// members
 		ActorState1 actorState1;  // 08
 		ActorState2 actorState2;  // 0C
+	private:
+		KEEP_FOR_RE()
 	};
 	static_assert(sizeof(ActorState) == 0x10);
 }

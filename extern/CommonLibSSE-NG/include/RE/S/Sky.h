@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RE/B/BSPointerHandle.h"
+#include "RE/B/BSResourceHandle.h"
 #include "RE/B/BSTArray.h"
 #include "RE/B/BSTList.h"
 #include "RE/B/BSTextureSet.h"
@@ -31,6 +32,7 @@ namespace RE
 	{
 	public:
 		inline static constexpr auto RTTI = RTTI_Sky;
+		inline static constexpr auto VTABLE = VTABLE_Sky;
 
 		enum class Mode
 		{
@@ -66,19 +68,22 @@ namespace RE
 
 		static Sky* GetSingleton();
 
-		[[nodiscard]] bool IsRaining() const;
-		[[nodiscard]] bool IsSnowing() const;
-
-		void SetWeather(TESWeather* a_weather, bool a_override, bool a_accelerate);
-		void ForceWeather(TESWeather* a_weather, bool a_override);
-		void ReleaseWeatherOverride();
-		void ResetWeather();
+		[[nodiscard]] float GetSunriseBegin();
+		[[nodiscard]] float GetSunriseEnd();
+		[[nodiscard]] float GetSunsetBegin();
+		[[nodiscard]] float GetSunsetEnd();
+		void                ForceWeather(TESWeather* a_weather, bool a_override);
+		[[nodiscard]] bool  IsRaining() const;
+		[[nodiscard]] bool  IsSnowing() const;
+		void                ReleaseWeatherOverride();
+		void                ResetWeather();
+		void                SetWeather(TESWeather* a_weather, bool a_override, bool a_accelerate);
 
 		// members
 		NiPointer<BSMultiBoundNode>            root;                            // 008
 		NiPointer<NiNode>                      moonsRoot;                       // 010
 		NiPointer<NiNode>                      auroraRoot;                      // 018
-		void*                                  auroraDBHandle;                  // 020
+		ModelDBHandle                          auroraModel;                     // 020
 		BGSLightingTemplate*                   extLightingOverride;             // 028
 		ObjectRefHandle                        currentRoom;                     // 030
 		ObjectRefHandle                        previousRoom;                    // 034
@@ -117,7 +122,8 @@ namespace RE
 		BSSimpleList<SkySound*>*               skySoundList;                    // 1C0
 		float                                  flash;                           // 1C8
 		std::uint32_t                          pad1CC;                          // 1CC
-		std::time_t                            flashTime;                       // 1D0
+		std::uint32_t                          flashTime;                       // 1D0
+		float                                  windowReflectionTimer;           // 1D4
 		std::uint32_t                          lastMoonPhaseUpdate;             // 1D8
 		stl::enumeration<Flags, std::uint32_t> flags;                           // 1DC
 		ImageSpaceModifierInstanceForm*        currentWeatherImageSpaceMod;     // 1E0
@@ -137,6 +143,8 @@ namespace RE
 		BSTArray<NiPointer<NiTexture>>         storedCloudTextures;             // 280
 		BSTArray<NiPointer<NiTexture>>         storedWorldMapCloudTextures;     // 298
 		BSTArray<SkyStaticRefData>             skyStaticRefData;                // 2B0
+	private:
+		KEEP_FOR_RE()
 	};
 	static_assert(sizeof(Sky) == 0x2C8);
 }
