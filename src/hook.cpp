@@ -2,7 +2,7 @@
 
 namespace hooks
 {
-    void on_animation_event::setglobals(){
+    void animEventHandler::setglobals(){
         auto HdSingle = RE::TESDataHandler::GetSingleton();
         auto DS = GetSingleton();
         DS->NSSFFLK_Enable = skyrim_cast<RE::TESGlobal*>(HdSingle->LookupForm(0x800, "No Spell Shout FF.esp"));
@@ -26,7 +26,7 @@ namespace hooks
 
         RE::BSEventNotifyControl ProcessEvent(const RE::TESCombatEvent *event, RE::BSTEventSource<RE::TESCombatEvent> *)
         {
-            auto DS = on_animation_event::GetSingleton();
+            auto DS = animEventHandler::GetSingleton();
             if (DS->NSSFFLK_Enable->value == 1.0){
                 return RE::BSEventNotifyControl::kContinue;
             }
@@ -72,44 +72,38 @@ namespace hooks
         eventSourceHolder->AddEventSink<RE::TESCombatEvent>(eventSink);
     }
 
-    void on_animation_event::ProcessEvent(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
+	RE::BSEventNotifyControl animEventHandler::HookedProcessEvent(RE::BSAnimationGraphEvent& a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* src)
 	{
-		if (!a_event->holder) {
+		FnProcessEvent fn = fnHash.at(*(uint64_t*)this);
+
+		if (!a_event.holder) {
+			return fn ? (this->*fn)(a_event, src) : RE::BSEventNotifyControl::kContinue;
+		}
+
+		RE::Actor* actor = const_cast<RE::TESObjectREFR*>(a_event.holder)->As<RE::Actor>();
+		if (!actor->IsPlayerRef()) {
 			return;
 		}
-		//std::string_view eventTag = a_event->tag.data();
-		RE::Actor* actor = const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>();
-        if (!actor->IsPlayerRef()){
-            return;
-        }
-        auto DS = GetSingleton();
-        switch (hash(a_event->tag.c_str(), a_event->tag.size())){
-        case "MLh_SpellFire_Event"_h:
-        case "MRh_SpellFire_Event"_h:
-        case "Voice_SpellFire_Event"_h:
-            if (actor->IsSneaking() && !actor->IsInCombat()){
-                if (DS->NSSFFLK_Enable->value != 0.0){
-                    DS->NSSFFLK_Enable->value = 0.0f;
-                }
-            }else{
-                if (DS->NSSFFLK_Enable->value != 1.0){
-                    DS->NSSFFLK_Enable->value = 1.0f;
-                }
-            }
-            break;
-        }
-    }
+		auto DS = GetSingleton();
+		switch (hash(a_event.tag.c_str(), a_event.tag.size())) {
+		case "MLh_SpellFire_Event"_h:
+		case "MRh_SpellFire_Event"_h:
+		case "Voice_SpellFire_Event"_h:
+			if (actor->IsSneaking() && !actor->IsInCombat()) {
+				if (DS->NSSFFLK_Enable->value != 0.0) {
+					DS->NSSFFLK_Enable->value = 0.0f;
+				}
+			} else {
+				if (DS->NSSFFLK_Enable->value != 1.0) {
+					DS->NSSFFLK_Enable->value = 1.0f;
+				}
+			}
+			break;
+		}
 
-	EventResult on_animation_event::ProcessEvent_NPC(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
-	{
-		ProcessEvent(a_sink, a_event, a_eventSource);
-		return _ProcessEvent_NPC(a_sink, a_event, a_eventSource);
+		return fn ? (this->*fn)(a_event, src) : RE::BSEventNotifyControl::kContinue;
 	}
 
-    EventResult on_animation_event::ProcessEvent_PC(RE::BSTEventSink<RE::BSAnimationGraphEvent>* a_sink, RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource)
-	{
-		ProcessEvent(a_sink, a_event, a_eventSource);
-		return _ProcessEvent_PC(a_sink, a_event, a_eventSource);
-	}
+	std::unordered_map<uint64_t, animEventHandler::FnProcessEvent> animEventHandler::fnHash;
 
 }

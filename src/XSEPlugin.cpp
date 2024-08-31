@@ -9,11 +9,11 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 {
 	switch (a_msg->type) {
 	case SKSE::MessagingInterface::kDataLoaded:
-		hooks::on_animation_event::install();
+		hooks::animEventHandler::Register(true, true);
 		hooks::util::install();
 		break;
 	case SKSE::MessagingInterface::kPostLoadGame:
-		hooks::on_animation_event::setglobals();
+		hooks::animEventHandler::setglobals();
 		break;
 	default:
 		break;
@@ -28,7 +28,7 @@ void Init()
 
 // void onSKSEInit()
 // {
-	
+// 	//hooks::alloc();
 // }
 
 void InitializeLog()
