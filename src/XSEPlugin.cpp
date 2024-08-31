@@ -26,10 +26,10 @@ void Init()
 	messaging->RegisterListener("SKSE", MessageHandler);
 }
 
-// void onSKSEInit()
-// {
-// 	//hooks::alloc();
-// }
+void onSKSEInit()
+{
+	hooks::alloc();
+}
 
 void InitializeLog()
 {
@@ -75,7 +75,7 @@ EXTERN_C [[maybe_unused]] __declspec(dllexport) bool SKSEAPI SKSEPlugin_Load(con
 
 	Init();
 
-	//onSKSEInit();
+	onSKSEInit();
 
 	return true;
 }
