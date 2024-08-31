@@ -81,9 +81,6 @@ namespace hooks
 		}
 
 		RE::Actor* actor = const_cast<RE::TESObjectREFR*>(a_event.holder)->As<RE::Actor>();
-		if (!actor->IsPlayerRef()) {
-			return;
-		}
 		auto DS = GetSingleton();
 		switch (hash(a_event.tag.c_str(), a_event.tag.size())) {
 		case "MLh_SpellFire_Event"_h:
