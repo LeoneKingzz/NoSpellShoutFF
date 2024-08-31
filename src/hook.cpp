@@ -1,5 +1,4 @@
 #include "hook.h"
-#include "ClibUtil/editorID.hpp"
 
 namespace hooks
 {
