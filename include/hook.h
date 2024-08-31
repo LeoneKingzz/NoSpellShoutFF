@@ -1,7 +1,7 @@
 #include "SKSE/Trampoline.h"
 #include "util.h"
 #pragma once
-//#pragma warning(disable: 4100)
+#pragma warning(disable: 4100)
 
 
 namespace hooks
